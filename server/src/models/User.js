@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  name: {
+  username: {
     type: String,
     required: true,
   },
@@ -13,18 +13,21 @@ const userSchema = new Schema({
     sparse: true, // allows multiple null/undefined
   },
   password: {
-    type: Striong,
+    type: String,
   },
   role: {
     type: String,
-    required: true,
+    default: "student",
   },
-  createdAt:{
-    type:Date,
-    default:Date.now,
-  }
+  interests: [String],
+  goal: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-userSchema.index({createdAt: -1});
+userSchema.index({ createdAt: -1 });
 
-export const userModel = mongoose.model("user", userSchema);
+const userModel = mongoose.model("user", userSchema);
+export default userModel;

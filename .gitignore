@@ -27,3 +27,6 @@ dist-ssr
 # Server
 .env
 .env.*
+
+#p
+todo.p
