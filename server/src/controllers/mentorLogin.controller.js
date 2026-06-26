@@ -89,7 +89,7 @@ class MentorController {
           expiresIn: "1d",
         }
       );
-
+      res.clearCookie("token");
       res.cookie("mentorToken", token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,

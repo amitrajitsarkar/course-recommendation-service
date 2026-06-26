@@ -1,6 +1,6 @@
 import express from "express";
 import courseController from "../controllers/course.controller.js";
-import mentorAuth from "../middleware/auth.middleware.js"
+import mentorAuth from "../middleware/auth.middleware.js";
 
 const courseRouter = express.Router();
 

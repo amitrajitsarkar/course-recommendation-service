@@ -4,9 +4,8 @@ import mentorLoginController from "../controllers/mentorLogin.controller.js";
 
 const mentorRouter = express.Router();
 
-
-mentorRouter.post("/login", mentorLoginController.login);
 mentorRouter.post("/signup", mentorLoginController.signup);
+mentorRouter.post("/login", mentorLoginController.login);
 
 mentorRouter.get("/all", mentorController.getAll);
 mentorRouter.get("/:username", mentorController.getOne);

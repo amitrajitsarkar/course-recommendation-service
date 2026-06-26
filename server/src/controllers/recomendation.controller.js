@@ -61,6 +61,7 @@ Do not include headings, markdown, explanations, or any other text.
       return res.status(200).json({
         success: true,
         for: student.username,
+        count : recommendations.length,
         recommendations,
       });
     } catch (error) {
