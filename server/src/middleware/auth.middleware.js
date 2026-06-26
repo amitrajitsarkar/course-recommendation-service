@@ -1,32 +1,27 @@
 import jwt from "jsonwebtoken";
 
-const authMiddleware = (req, res, next) => {
+const mentorAuth = (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies.mentorToken;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized",
+        message: "Access denied. Please login.",
       });
     }
 
-    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
-
-    req.user = decoded; // the id and role
+    req.user = decoded;
 
     next();
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Invalid token",
+      message: "Invalid or expired token",
     });
   }
 };
 
-export default authMiddleware;
+export default mentorAuth;

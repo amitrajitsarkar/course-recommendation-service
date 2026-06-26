@@ -1,6 +1,8 @@
-import express from "express";
 import "dotenv/config";
+import express from "express";
 import cors from "cors";
+
+import cookieParser from "cookie-parser";
 
 import indexRouter from "./routes/index.routes.js";
 
@@ -13,6 +15,7 @@ import connectDb from "./config/db.js";
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 await connectDb();
 

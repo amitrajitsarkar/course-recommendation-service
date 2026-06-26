@@ -5,6 +5,13 @@ const mentorSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     expertise: {
       type: [String],
@@ -14,16 +21,16 @@ const mentorSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    role:{
-        type:String,
-        default: "mentors"
-    }
+    role: {
+      type: String,
+      default: "mentor",
+    },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-const mentorModel = await mongoose.model("mentor", mentorSchema);
-export default mentorModel;
+const mentorModel = mongoose.model("Mentor", mentorSchema);
 
+export default mentorModel;
