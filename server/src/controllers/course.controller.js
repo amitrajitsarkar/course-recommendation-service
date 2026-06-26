@@ -44,11 +44,12 @@ class CourseController {
 
   async getAll(req, res) {
     try {
-      let courses = await courseModel.find();
-      if (courses.length !== 0) {
-        courses.select("mentor title description");
-      } else {
-        courses = "No Course is created yet";
+      let courses = await courseModel.find().select("mentor title description");
+      if(courses.length===0){
+        return res.status(200).json({
+        success: true,
+        message: "No courses found yet",
+      });
       }
       return res.status(200).json({
         success: true,

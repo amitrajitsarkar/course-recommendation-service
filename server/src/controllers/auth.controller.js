@@ -29,15 +29,14 @@ class AuthController {
         });
       }
 
-      const hashedPassword = await bcrypt.hash(
-        password,
-        saltRound
-      );
+      const hashedPassword = await bcrypt.hash(password, saltRound);
 
       const user = await userModel.create({
         username: userName,
         password: hashedPassword,
         role: role || "student",
+        interests: req.body.interests || [],
+        goal: req.body.goal || "",
       });
 
       return res.status(201).json({
@@ -72,10 +71,7 @@ class AuthController {
         });
       }
 
-      const isMatch = await bcrypt.compare(
-        password,
-        user.password
-      );
+      const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
         return res.status(401).json({
@@ -92,7 +88,7 @@ class AuthController {
         process.env.JWT_SECRET,
         {
           expiresIn: "1d",
-        }
+        },
       );
 
       res.clearCookie("mentorToken");
@@ -105,6 +101,7 @@ class AuthController {
       return res.status(200).json({
         success: true,
         message: "Login successful",
+        "welcome" : user.username,
       });
     } catch (error) {
       return res.status(500).json({

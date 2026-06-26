@@ -12,13 +12,12 @@ class RecommendationController {
     try {
       const student = await userModel
         .findById(req.user.userId)
-        .select("interests goal");
+        .select("username interests goal");
 
       if (!student) {
-        return res.status(404).json({
-          success: false,
-          msg: "No student found",
-        });
+        return res
+          .status(404)
+          .json({ success: false, msg: "No student found" });
       }
 
       const courses = await courseModel
@@ -36,9 +35,10 @@ class RecommendationController {
     ${JSON.stringify(courses, null, 2)}
 
 Recommend only the best 1 or 2 courses.
-Return ONLY in this format (Exactly is this format):
-    
-The suitable courses for your interest(s) :
+Return ONLY a valid JSON array.
+
+Example:
+
 [
   {
     "title": "...",
@@ -47,7 +47,7 @@ The suitable courses for your interest(s) :
   }
 ]
 
-Do not include markdown, explanations, or any extra text.
+Do not include headings, markdown, explanations, or any other text.
 `;
 
       const response = await ai.models.generateContent({
@@ -55,15 +55,17 @@ Do not include markdown, explanations, or any extra text.
         contents: prompt,
       });
 
+      const cleanText = response.text.replace(/```json|```/g, "").trim();
+      const recommendations = JSON.parse(cleanText);
+
       return res.status(200).json({
         success: true,
-        recommendations: response.text,
+        for: student.username,
+        recommendations,
       });
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
+      console.error("Recommendation error:", error);
+      return res.status(500).json({ success: false, message: error.message });
     }
   }
 }
